@@ -2,6 +2,7 @@
 # Mengimpor library yang diperlukan
 import streamlit as st
 import pandas as pd
+import numpy as np
 import pickle
 import joblib
 import time
@@ -9,6 +10,8 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import seaborn as sns
+from sklearn.metrics import mean_squared_error
+from sklearn.ensemble import RandomForestRegressor
 sns.set(style='dark')
 from sklearn.metrics import accuracy_score
 
@@ -24,7 +27,7 @@ model = joblib.load(open(model_path, "rb"))
 
 # Memprediksi data yang sama dengan yang digunakan untuk training
 y_pred = model.predict(X)
-# accuracy = accuracy_score(y, y_pred)
+mse_value_matrix = mean_squared_error(y, y_pred)
 # accuracy = round((accuracy * 100), 2)
 
 # Menyiapkan DataFrame untuk user input
@@ -36,11 +39,11 @@ st.set_page_config(page_title="Production Cost Predict (Wajit)", page_icon=":ric
 
 # Menampilkan judul halaman
 st.title("Production Cost Predict (Wajit)")
-# Menampilkan akurasi model
-# st.write(
-#     f"**_Model's Accuracy_** :  :green[**{accuracy}**]%"
-# )
-# st.write("")
+# Menampilkan mse model
+st.write(
+    f"**_Model's Mean Squared Error (RandomForest)_** :  :green[**{mse_value_matrix:.2f}**]"
+)
+st.write("")
 
 # Membuat tab untuk single prediction dan multi-prediction
 tab1, tab2 = st.tabs(["Prediction", "Dashboard"])
@@ -49,16 +52,18 @@ tab1, tab2 = st.tabs(["Prediction", "Dashboard"])
 with tab1:
     st.sidebar.header("**User Input** Sidebar")
 
-    # Menambahkan input untuk Gula pasir dengan batasan nilai minimum dan maksimum
+    # Menambahkan input untuk Gula Pasir dengan batasan nilai minimum dan maksimum
     gula_pasir = st.sidebar.number_input(
         label="**Gula Pasir (Rp)**",
-        min_value=int(df_final["Gula Pasir (Rp)"].min()),
-        max_value=int(df_final["Gula Pasir (Rp)"].max()),
-        step=1 # Mengatur langkah menjadi 1 agar hanya menerima nilai integer
+        min_value=float(df_final["Gula Pasir (Rp)"].min()),  # Ubah ke float
+        max_value=float(df_final["Gula Pasir (Rp)"].max()),  # Ubah ke float
+        step=0.01  # Ubah langkah menjadi 0.01 agar bisa menerima angka desimal
     )
-    # Menampilkan informasi tentang batas nilai Gula pasir
+
+    # Menampilkan informasi tentang batas nilai Gula Pasir
     st.sidebar.write(
-        f":orange[Min] value: :orange[**{df_final['Gula Pasir (Rp)'].min()}**], :red[Max] value: :red[**{df_final['Gula Pasir (Rp)'].max()}**]"
+        f":orange[Min] value: :orange[**{df_final['Gula Pasir (Rp)'].min():.2f}**], "
+        f":red[Max] value: :red[**{df_final['Gula Pasir (Rp)'].max():.2f}**]"
     )
     st.sidebar.write("")
 
@@ -66,13 +71,13 @@ with tab1:
     # Menambahkan input untuk Gula Merah dengan batasan nilai minimum dan maksimum
     gula_merah = st.sidebar.number_input(
         label="**Gula Merah (Rp)**",
-        min_value=int(df_final["Gula Merah (Rp)"].min()),
-        max_value=int(df_final["Gula Merah (Rp)"].max()),
-        step=1 # Mengatur langkah menjadi 1 agar hanya menerima nilai integer
+        min_value=float(df_final["Gula Merah (Rp)"].min()),
+        max_value=float(df_final["Gula Merah (Rp)"].max()),
+        step=0.01 # Mengatur langkah menjadi 1 agar hanya menerima nilai integer
     )
     # Menampilkan informasi tentang batas nilai Gula Merah
     st.sidebar.write(
-        f":orange[Min] value: :orange[**{df_final['Gula Merah (Rp)'].min()}**], :red[Max] value: :red[**{df_final['Gula Merah (Rp)'].max()}**]"
+        f":orange[Min] value: :orange[**{df_final['Gula Merah (Rp)'].min():.2f}**], :red[Max] value: :red[**{df_final['Gula Merah (Rp)'].max():.2f}**]"
     )
     st.sidebar.write("")
 
@@ -195,8 +200,14 @@ with tab1:
     # Melakukan prediksi saat tombol ditekan
     st.write("")
     if predict_btn:
+        # Membuat input fitur sesuai dengan yang digunakan dalam pelatihan model
         inputs = [[gula_pasir, gula_merah, kelapa, beras_ketan, daun_jagung, vanili_bubuk, jumlah_produksi, gaji_karyawan, biaya_overhead]]
-        prediction = model.predict(inputs)[0]
+
+        # Pastikan semua input dalam format float agar sesuai dengan model
+        inputs = [[float(i) for i in inputs[0]]]
+
+        # Melakukan prediksi dengan model
+        prediction = model.predict(inputs)[0]  # Ambil hasil prediksi pertama
 
         # Menampilkan bar progress selama prediksi berlangsung
         bar = st.progress(0)
@@ -211,28 +222,28 @@ with tab1:
                 status_text.empty()
                 bar.empty()
 
-        # # Menampilkan hasil prediksi dan deskripsi hasilnya
-        # if prediction == 0:
-        #     result = ":green[**Healthy**]"
-        #     desc = 'Ini menunjukkan bahwa seseorang dinyatakan sebagai individu yang sehat dari segi kesehatan jantung. Biasanya, ini berarti bahwa hasil pemeriksaan atau model prediktif menunjukkan bahwa risiko penyakit jantung pada individu tersebut rendah atau tidak ada.'
-        # elif prediction == 1:
-        #     result = ":orange[**Heart disease level 1**]"
-        #     desc = 'Ini mengindikasikan bahwa seseorang memiliki tingkat ringan dari penyakit jantung. Meskipun mungkin ada beberapa indikasi atau faktor risiko, tingkat ini biasanya dianggap sebagai awal dari perkembangan penyakit jantung.'
-        # elif prediction == 2:
-        #     result = ":orange[**Heart disease level 2**]"
-        #     desc = 'Tingkat ini menunjukkan tingkat penyakit jantung yang lebih lanjut atau lebih serius daripada tingkat 1. Gejala dan risiko komplikasi bisa menjadi lebih signifikan.'
-        # elif prediction == 3:
-        #     result = ":red[**Heart disease level 3**]"
-        #     desc = 'Ini mencerminkan penyakit jantung pada tingkat yang cukup serius, dengan gejala dan risiko komplikasi yang lebih parah. Pengelolaan dan perawatan medis yang intensif mungkin diperlukan.'
-        # elif prediction == 4:
-        #     result = ":red[**Heart disease level 4**]"
-        #     desc = 'Ini adalah tingkat penyakit jantung yang paling parah. Pada tingkat ini, seseorang mungkin menghadapi risiko yang sangat tinggi terhadap masalah kesehatan jantung dan mungkin memerlukan perawatan medis yang sangat intensif.'
+        
+        # Menampilkan hasil prediksi dan deskripsi hasilnya
+        if prediction >= 1000 and prediction <= 3000 :
+            result = ":green[**Rendah**]"
+            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sangat rendah'
+        elif prediction >= 3001 and prediction <= 6000 :
+            result = ":orange[**Sedang**]"
+            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sedang'
+        elif prediction > 6001  :
+            result = ":red[**Tinggi**]"
+            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sangat tinggi'
+     
+        
+        # Mengalikan hasil prediksi dengan 1000
+        prediction_final = prediction * 1000
 
-        # Menampilkan hasil prediksi dan deskripsi
+        # Menampilkan hasil prediksi dengan format yang lebih jelas
         st.write("")
-        st.subheader("Prediction:")
-        # st.subheader(result)
-        # st.write(desc)
+        st.subheader("Hasil Prediksi:")
+        st.success(f"💰 **Prediksi Biaya Produksi: Rp {prediction_final:,.2f}**")
+        st.subheader(result)
+        st.write(desc)
 
 
 with tab2:
