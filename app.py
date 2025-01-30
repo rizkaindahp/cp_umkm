@@ -23,7 +23,7 @@ y = df_eda["Total Biaya Produksi/Hari"]
 
 # Memuat model dari file joblib
 model_path = "model/random_forest_model.pkl"
-model = joblib.load(open(model_path, "rb"))
+model = pickle.load(open(model_path, "rb"))
 
 # Memprediksi data yang sama dengan yang digunakan untuk training
 y_pred = model.predict(X)
