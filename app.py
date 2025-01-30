@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import joblib
 import time
 import os
 import matplotlib.pyplot as plt
@@ -26,7 +25,9 @@ model_path = "model/random_forest_model.pkl"
 model = pickle.load(open(model_path, "rb"))
 
 # Memprediksi data yang sama dengan yang digunakan untuk training
-y_pred = model.predict(X)
+RF = RandomForestRegressor(n_estimators=30, max_depth=16)
+RF.fit(X.values, y) 
+y_pred = RF.predict(X.values)
 mse_value_matrix = mean_squared_error(y, y_pred)
 # accuracy = round((accuracy * 100), 2)
 
