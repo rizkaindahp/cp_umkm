@@ -38,7 +38,7 @@ df_final["Total Biaya Produksi/Hari"] = y
 st.set_page_config(page_title="Production Cost Predict (Wajit)", page_icon=":rice_cracker:")
 
 # Menampilkan judul halaman
-st.title("Production Cost Predict (Wajit)")
+st.title("Production Cost Predict (Wajit) - Wajit Kira App")
 
 # Menampilkan mse model
 st.write(
