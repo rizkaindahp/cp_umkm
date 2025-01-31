@@ -29,7 +29,6 @@ RF = RandomForestRegressor(n_estimators=100, max_depth=16, random_state=42)
 RF.fit(X.values, y) 
 y_pred = RF.predict(X.values)
 mse_value_matrix = mean_squared_error(y, y_pred)
-# accuracy = round((accuracy * 100), 2)
 
 # Menyiapkan DataFrame untuk user input
 df_final = X
@@ -359,7 +358,7 @@ with tab2:
     # Adding labels and title
     ax.set_xlabel('Nama Toko')
     ax.set_ylabel('Total Jumlah Produksi')
-    ax.set_title('Total Production Quantity per Store Toko')
+    ax.set_title('Total Production Quantity per Store')
 
     # Rotate x labels for better readability
     ax.set_xticks(range(len(count_jml_production_df.index)))
