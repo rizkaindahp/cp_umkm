@@ -25,7 +25,7 @@ model_path = "model/random_forest_model.pkl"
 model = pickle.load(open(model_path, "rb"))
 
 # Memprediksi data yang sama dengan yang digunakan untuk training
-RF = RandomForestRegressor(n_estimators=30, max_depth=16)
+RF = RandomForestRegressor(n_estimators=100, max_depth=16, random_state=42)
 RF.fit(X.values, y) 
 y_pred = RF.predict(X.values)
 mse_value_matrix = mean_squared_error(y, y_pred)
