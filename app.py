@@ -39,6 +39,7 @@ st.set_page_config(page_title="Production Cost Predict (Wajit)", page_icon=":ric
 
 # Menampilkan judul halaman
 st.title("Production Cost Predict (Wajit)")
+
 # Menampilkan mse model
 st.write(
     f"**_Model's Mean Squared Error (RandomForest)_** :  :green[**{mse_value_matrix:.2f}**]"
@@ -226,15 +227,14 @@ with tab1:
         # Menampilkan hasil prediksi dan deskripsi hasilnya
         if prediction >= 1000 and prediction <= 3000 :
             result = ":green[**Rendah**]"
-            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sangat rendah'
+            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sangat rendah.'
         elif prediction >= 3001 and prediction <= 6000 :
             result = ":orange[**Sedang**]"
-            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sedang'
+            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sedang.'
         elif prediction > 6001  :
             result = ":red[**Tinggi**]"
-            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan sangat tinggi'
+            desc = 'Ini menunjukkan biaya produksi yang dikeluarkan cukup tinggi.'
      
-        
         # Mengalikan hasil prediksi dengan 1000
         prediction_final = prediction * 1000
 
@@ -344,7 +344,7 @@ with tab2:
     st.markdown("<hr style='margin: 15px 0; border-color: #47663B;'>", unsafe_allow_html=True)
 
     ##  =============== Plot Jumlah Produksi =================
-    st.subheader("Production Quantity per Store Toko")
+    st.subheader("Production Quantity per Store")
 
     # Bar plot of total "Jumlah Produksi" per "Nama Toko"
     fig, ax = plt.subplots(figsize=(10, 6))
