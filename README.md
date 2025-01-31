@@ -27,7 +27,7 @@ Kelompok : `DB4-PS007`
 
 ![alt text](<image_2.png>)
 
-## Deplyment
+## Deployment
 
 Link aplikasi "Wajit Kira" [here](https://cp-predict-cost-wajit-dashboard-db4-ps007.streamlit.app/)
 
