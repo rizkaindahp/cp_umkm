@@ -1,4 +1,4 @@
-# Optimasi Produksi UMKM melalui Penerapan Analisi Data
+# Optimasi Produksi UMKM melalui Penerapan Analisis Data
 
 Tugas Capstone Project Dicoding Data Science
 
@@ -36,16 +36,19 @@ Link aplikasi "Wajit Kira" [here](https://cp-predict-cost-wajit-dashboard-db4-ps
 To replicate the experiment or use the prediction model locally:
 
 1. Clone this repository.
-
-https://github.com/rizkaindahp/cp_umkm.git
+   ```bash
+   git clone https://github.com/rizkaindahp/cp_umkm.git
+   ```
 
 2. Install the required packages.
-
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 3. Run the Streamlit app.
-
-streamlit run app.py
+   ```bash
+   streamlit run app.py
+   ```
 
 Now, you can access the prediction model locally through your web browser.
 
