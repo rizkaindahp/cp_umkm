@@ -4,9 +4,8 @@ Tugas Capstone Project Dicoding Data Science
 
 Kelompok : `DB4-PS007`
 
-- Link aplikasi : https://cp-predict-cost-wajit-dashboard-db4-ps007.streamlit.app/
-
 ## Pembahasan
+
 <p>Repositori ini berfokus pada prediksi biaya harga produksi wajit. Proyek ini menggunakan <strong>Streamlit</strong> untuk visualisasi data dan dapat ditemukan <a href="https://drive.google.com/file/d/1Tu9uOavkcdYZc8wrPhQjoRBrrMSiDqYtYh0lcqHSXRg/view">di sini</a>. </p>
 
 <p>Proyek ini memungkinkan pengguna untuk mengeksplorasi prediksi biaya harga produksi wajit berdasarkan 9 atribut utama:</p>
@@ -27,3 +26,31 @@ Kelompok : `DB4-PS007`
 ![alt text](image.png)
 
 ![alt text](<image_2.png>)
+
+## Deplyment
+
+Link aplikasi "Wajit Kira" [here](https://cp-predict-cost-wajit-dashboard-db4-ps007.streamlit.app/)
+
+
+## Usage
+To replicate the experiment or use the prediction model locally:
+
+1. Clone this repository.
+
+https://github.com/rizkaindahp/cp_umkm.git
+
+2. Install the required packages.
+
+pip install -r requirements.txt
+
+3. Run the Streamlit app.
+
+streamlit run app.py
+
+Now, you can access the prediction model locally through your web browser.
+
+Feel free to explore and contribute to this project!
+
+
+
+
